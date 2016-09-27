@@ -4,6 +4,7 @@
 package net.landarzar.game.werewolf.model;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import net.landarzar.function.TriConsumer;
 import net.landarzar.game.werewolf.WerewolfGame;
@@ -42,7 +43,7 @@ public abstract class Role
 	 * @param consumer
 	 * @return
 	 */
-	public abstract LinkedList<Action> verifyActions(WerewolfGame game, Player player, LinkedList<Action> actions, TriConsumer<WerewolfGame, Action,String> consumer);
+	public abstract List<Action> verifyActions(WerewolfGame game, Player player, List<Action> actions, TriConsumer<WerewolfGame, Action,String> consumer);
 	
 	public abstract boolean hasWon(WerewolfGame game, Player player);
 
@@ -57,11 +58,23 @@ public abstract class Role
 	 * @param target
 	 *            Das Ziel
 	 */
-	protected void onGetKilled(WerewolfGame game, Player killer, Player target)
+	public void onGetKilled(WerewolfGame game, Player killer, Player target)
 	{
-	};
+	}
 
-	protected void performNightRole(WerewolfGame game, Player player)
+	public void onBeginDay(WerewolfGame game, Player player)
+	{
+	}
+
+	public void onEndDay(WerewolfGame game, Player player)
+	{
+	}
+
+	public void onBeginNight(WerewolfGame game, Player player)
+	{
+	}
+
+	public void onEndNight(WerewolfGame game, Player player)
 	{
 	}
 }

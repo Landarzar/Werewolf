@@ -5,6 +5,7 @@ package net.landarzar.game.werewolf;
 
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import net.landarzar.game.werewolf.model.Action;
 import net.landarzar.game.werewolf.model.Group;
@@ -139,10 +140,17 @@ public abstract class WerewolfGame
 		betweenTheDN = true;
 
 		LinkedList<Action> puffer = new LinkedList<>();
+		
+		for (Player player : players) {
+			LinkedList<?> ll = new LinkedList<>();
+			player.role.verifyActions(this, player, nextActions.stream().filter((a) -> a.actor == player).collect(Collectors.toList()), this::onInvalidAction);
+			
+			puffer.removeAll(ll);
+		}
 
 		for (Action action : nextActions) {
-
 			puffer.add(action);
+			
 		}
 
 		onFinishNight(this, puffer);

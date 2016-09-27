@@ -13,6 +13,7 @@ import net.landarzar.game.werewolf.WerewolfGame;
 public abstract class Action
 {
 	public String name;
+	public Player actor;
 	
 	public abstract void perform(WerewolfGame game);
 }

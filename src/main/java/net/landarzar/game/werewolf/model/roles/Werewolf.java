@@ -4,6 +4,7 @@
 package net.landarzar.game.werewolf.model.roles;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import net.landarzar.function.TriConsumer;
 import net.landarzar.game.werewolf.WerewolfGame;
@@ -30,7 +31,7 @@ public class Werewolf extends Role
 		super.nightPriority = 10;
 		super.group = Group.Werewolf;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -40,7 +41,7 @@ public class Werewolf extends Role
 	 * net.landarzar.function.TriConsumer)
 	 */
 	@Override
-	public LinkedList<Action> verifyActions(WerewolfGame game, Player player, LinkedList<Action> actions, TriConsumer<WerewolfGame, Action, String> onFailure)
+	public LinkedList<Action> verifyActions(WerewolfGame game, Player player, List<Action> actions, TriConsumer<WerewolfGame, Action, String> onFailure)
 	{
 		if (!player.isAlive) {
 			for (Action action : actions) {
