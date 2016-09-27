@@ -3,6 +3,9 @@
  */
 package net.landarzar.game.werewolf.model;
 
+import java.util.LinkedList;
+
+import net.landarzar.function.TriConsumer;
 import net.landarzar.game.werewolf.WerewolfGame;
 
 /**
@@ -26,6 +29,22 @@ public abstract class Role
 	 * Niedriegste zuerst.
 	 */
 	public int nightPriority = Integer.MAX_VALUE;
+	
+	/***
+	 * Die Gruppe zu der die Rolle gehört
+	 */
+	public Group group;
+	
+	/***
+	 * Verifiziert ob die Aktionen eine Spielers korrekt sind
+	 * @param game
+	 * @param actions
+	 * @param consumer
+	 * @return
+	 */
+	public abstract LinkedList<Action> verifyActions(WerewolfGame game, Player player, LinkedList<Action> actions, TriConsumer<WerewolfGame, Action,String> consumer);
+	
+	public abstract boolean hasWon(WerewolfGame game, Player player);
 
 	/***
 	 * Wird aufgerufen wenn ein Spieler gekillt wird von einem anderen Spieler
@@ -38,7 +57,9 @@ public abstract class Role
 	 * @param target
 	 *            Das Ziel
 	 */
-	protected abstract void onGetKilled(WerewolfGame game, Player killer, Player target);
+	protected void onGetKilled(WerewolfGame game, Player killer, Player target)
+	{
+	};
 
 	protected void performNightRole(WerewolfGame game, Player player)
 	{

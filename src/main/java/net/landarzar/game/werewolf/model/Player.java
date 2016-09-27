@@ -29,6 +29,11 @@ public class Player
 	 */
 	public boolean isAlive = true;
 	
+	/***
+	 * Gibt an ob der Spieler gewonnen hat
+	 */
+	public boolean hasWon = false;
+	
 	/**
 	 * Variable um Wahlen des Spieler zu hinterlegen
 	 */

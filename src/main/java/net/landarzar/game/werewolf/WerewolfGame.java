@@ -3,8 +3,11 @@
  */
 package net.landarzar.game.werewolf;
 
+import java.util.Hashtable;
 import java.util.LinkedList;
 
+import net.landarzar.game.werewolf.model.Action;
+import net.landarzar.game.werewolf.model.Group;
 import net.landarzar.game.werewolf.model.Player;
 
 /**
@@ -15,7 +18,25 @@ import net.landarzar.game.werewolf.model.Player;
  */
 public abstract class WerewolfGame
 {
-	LinkedList<Player> player = new LinkedList<>();
+	/***
+	 * Die Liste an Spielern
+	 */
+	public LinkedList<Player> players = new LinkedList<>();
+
+	/***
+	 * Nächste Aktion
+	 */
+	public LinkedList<Action> nextActions = new LinkedList<>();
+
+	/***
+	 * Historie der Aktionen
+	 */
+	public LinkedList<Action> history = new LinkedList<>();
+	
+	/***
+	 * Die Auswahlen dieser Phase
+	 */
+	public Hashtable<Group, Hashtable<Player, Integer>> choices = new Hashtable<>();
 
 	/***
 	 * Ist es gerade Tag
@@ -25,6 +46,26 @@ public abstract class WerewolfGame
 	 * Gibt an ob es zwischen Tag oder Nacht ist.
 	 */
 	boolean betweenTheDN = true;
+
+	/***
+	 * Gibt an ob es gerade Tag ist
+	 * 
+	 * @return
+	 */
+	public boolean isInDay()
+	{
+		return day && !betweenTheDN;
+	}
+
+	/**
+	 * Gibt an ob es gerade Nacht ist
+	 * 
+	 * @return
+	 */
+	public boolean isInNight()
+	{
+		return day && !betweenTheDN;
+	}
 
 	/***
 	 * Startet den Tagmodus
@@ -37,9 +78,10 @@ public abstract class WerewolfGame
 			throw new Exception("Kann nicht den Tag starten, wenn es noch Nacht ist.");
 		betweenTheDN = false;
 	}
-	
+
 	/***
 	 * Wird aufgerufen wenn der Tag startet
+	 * 
 	 * @param game
 	 */
 	protected abstract void onStartDay(WerewolfGame game);
@@ -57,12 +99,13 @@ public abstract class WerewolfGame
 		day = false;
 		betweenTheDN = true;
 	}
-	
+
 	/***
 	 * Wird aufgerufen wenn der Tag endet
+	 * 
 	 * @param game
 	 */
-	protected abstract void onFinishDay(WerewolfGame game);
+	protected abstract void onFinishDay(WerewolfGame game, LinkedList<Action> actions);
 
 	/***
 	 * Startet den Nachtmodus
@@ -75,16 +118,18 @@ public abstract class WerewolfGame
 			throw new Exception("Kann nicht die Nacht starten, wenn es noch Tag ist.");
 		betweenTheDN = false;
 	}
-	
+
 	/***
 	 * Wird aufgerufen wenn die Nacht startet
+	 * 
 	 * @param game
 	 */
 	protected abstract void onStartNight(WerewolfGame game);
 
 	/***
 	 * Beendet den Nachtmodus
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	protected void finishNight() throws Exception
 	{
@@ -92,11 +137,35 @@ public abstract class WerewolfGame
 			throw new Exception("Kann nicht die Nacht beenden, wenn es Tag ist.");
 		day = true;
 		betweenTheDN = true;
+
+		LinkedList<Action> puffer = new LinkedList<>();
+
+		for (Action action : nextActions) {
+
+			puffer.add(action);
+		}
+
+		onFinishNight(this, puffer);
 	}
-	
+
 	/***
 	 * Wird aufgerufen wenn die Nacht endet
+	 * 
 	 * @param game
 	 */
-	protected abstract void onFinishNight(WerewolfGame game);
+	protected abstract void onFinishNight(WerewolfGame game, LinkedList<Action> actions);
+
+	/***
+	 * Wird aufgerufen wenn eine Aktion nicht valide ist.
+	 * 
+	 * @param game
+	 */
+	protected abstract void onInvalidAction(WerewolfGame game, Action action, String reason);
+
+	/***
+	 * Wird aufgerufen wenn eine Aktion nicht bekannt ist.
+	 * 
+	 * @param game
+	 */
+	protected abstract void onUnknownAction(WerewolfGame game, Action action);
 }
