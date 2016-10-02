@@ -15,6 +15,7 @@ apply plugin: 'eclipse'
 repositories {
     mavenCentral()
 }
+compileJava {options.encoding = "UTF-8"}
 
 //mainClassName = 'net.landarzar.telegrambot.Application'
 
